@@ -627,3 +627,6 @@ app.post("/deleteClub", jsonParser, function (req, res, next) {
 app.listen(process.env.POST || 100, function () {
   console.log("CORS-enabled web server listening on port 80");
 });
+
+
+module.exports = app 
