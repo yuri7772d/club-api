@@ -16,6 +16,8 @@ const connection = mysql.createConnection(process.env.DATABASE_URL);
 app.use(cors());
 
 app.post("/register", jsonParser, function (req, res, next) {
+  try {
+    
   const username = req.body.username;
   const password = req.body.password;
   const prefix = req.body.prefix;
@@ -44,10 +46,14 @@ app.post("/register", jsonParser, function (req, res, next) {
       }
     }
   );
-
+} catch (error) {
+    res.json({msg:error})
+}
   // res.json({msg:"post"})
 });
 app.get("/register", jsonParser, function (req, res, next) {
+  try {
+    
   console.log("on get prefix");
   connection.execute(
     "SELECT prefix.prefix_name ,prefix.prefix_id FROM prefix",
@@ -55,9 +61,15 @@ app.get("/register", jsonParser, function (req, res, next) {
       res.json({ prefix: data });
     }
   );
+} catch (error) {
+    res.json({error})
+}
 });
 
 app.post("/login", jsonParser, function (req, res, next) {
+  try {
+    
+ 
   console.log("on login");
   const username = req.body.username;
   const password = req.body.password;
@@ -93,9 +105,13 @@ app.post("/login", jsonParser, function (req, res, next) {
       });
     }
   );
+} catch (error) {
+    res.json({msg:error})
+}
 });
 
 app.get("/myProfile", jsonParser, function (req, res, next) {
+  try {
   console.log("on get myProfile");
   var token = req.headers.authorization.split(" ")[1];
   jwt.verify(token, privateKey, function (err, decoded) {
@@ -125,9 +141,15 @@ app.get("/myProfile", jsonParser, function (req, res, next) {
       }
     );
   });
+} catch (error) {
+    
+}
 });
 
 app.get("/clubProfile", jsonParser, function (req, res, next) {
+  try {
+    
+
   console.log("on get clubProfile");
   var token = req.headers.authorization.split(" ")[1];
   jwt.verify(token, privateKey, function (err, decoded) {
@@ -166,9 +188,15 @@ app.get("/clubProfile", jsonParser, function (req, res, next) {
       }
     );
   });
+} catch (error) {
+    
+}
 });
 
 app.get("/clubList", jsonParser, function (req, res, next) {
+  try {
+    
+ 
   console.log("on get clubList");
   var token = req.headers.authorization.split(" ")[1];
   jwt.verify(token, privateKey, function (err, decoded) {
@@ -216,9 +244,16 @@ app.get("/clubList", jsonParser, function (req, res, next) {
       }
     );
   });
+} catch (error) {
+    
+}
 });
 
 app.get("/member", jsonParser, function (req, res, next) {
+
+  try {
+    
+ 
   console.log("on get club member");
   var token = req.headers.authorization.split(" ")[1];
   jwt.verify(token, privateKey, function (err, decoded) {
@@ -271,9 +306,14 @@ WHERE club_join.club_id=? `,
       }
     );
   });
+} catch (error) {
+    
+}
 });
 
 app.post("/create", jsonParser, function (req, res, next) {
+  try {
+    
   console.log("on create");
   console.log(req.headers.authorization);
   var token = req.headers.authorization.split(" ")[1];
@@ -352,9 +392,13 @@ app.post("/create", jsonParser, function (req, res, next) {
       }
     );
   });
+} catch (error) {
+    res.json({msg : error})
+}
 });
 
 app.post("/join", jsonParser, function (req, res, next) {
+  try{
   console.log("on join");
   console.log(req.headers.authorization);
   var token = req.headers.authorization.split(" ")[1];
@@ -437,9 +481,13 @@ app.post("/join", jsonParser, function (req, res, next) {
       }
     );
   });
+} catch (error) {
+    
+}
 });
 
 app.post("/outClub", jsonParser, function (req, res, next) {
+  try{
   console.log("on out Club");
 
   var token = req.headers.authorization.split(" ")[1];
@@ -537,9 +585,13 @@ app.post("/outClub", jsonParser, function (req, res, next) {
       }
     );
   });
+} catch (error) {
+    
+}
 });
 
 app.post("/deleteClub", jsonParser, function (req, res, next) {
+  try{
   console.log("on Delete Club");
 
   var token = req.headers.authorization.split(" ")[1];
@@ -622,10 +674,18 @@ app.post("/deleteClub", jsonParser, function (req, res, next) {
       }
     );
   });
+} catch (error) {
+    
+}
 });
 
+app.get("/", jsonParser, function (req, res, next) {
+  res.json({ msg:"wellcom"});
+});
+
+
 app.listen(process.env.POST || 100, function () {
-  console.log("CORS-enabled web server listening on port 80");
+  console.log("CORS-enabled web server listening on port 100");
 });
 
 
